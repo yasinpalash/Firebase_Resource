@@ -1,5 +1,6 @@
 import 'package:firebase/firebase_options.dart';
 import 'package:firebase/forgot_password_screen.dart';
+import 'package:firebase/home_screen.dart';
 import 'package:firebase/login.dart';
 import 'package:firebase/singup.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
         '/signup': (context) => SignUpScreen(),
         '/login': (context) => LoginScreen(),
         '/forgot': (context) => ForgotPasswordScreen(),
+        '/home': (context) => HomeScreen(),
       },
     );
   }

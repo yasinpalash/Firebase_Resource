@@ -32,8 +32,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text("Registration Success")));
-    } catch (e) {
-      print(e);
+      Navigator.pushNamed(context, '/home');
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              "Password is weak",
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+        );
+      } else if (e.code == 'email-already-in-use') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              "Email already in use",
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+        );
+      }
     }
   }
 
@@ -104,7 +123,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
               const SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () {
-                  if (_formKey.currentState!.validate()) {}
+                  if (_formKey.currentState!.validate()) {
+                    setState(() {
+                      name = _nameController.text;
+                      email = _emailController.text;
+                      password = _passwordController.text;
+                    });
+                    registration();
+                  }
                 },
                 child: Text("Sign Up"),
               ),
