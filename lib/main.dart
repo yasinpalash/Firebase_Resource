@@ -1,32 +1,25 @@
 import 'package:firebase/firebase_options.dart';
-import 'package:firebase/forgot_password_screen.dart';
-import 'package:firebase/home_screen.dart';
-import 'package:firebase/login.dart';
-import 'package:firebase/singup.dart';
+import 'package:firebase/features/authentication/presentation/screens/forgot_password_screen.dart';
+import 'package:firebase/features/authentication/presentation/screens/home_screen.dart';
+import 'package:firebase/features/authentication/presentation/screens/login.dart';
+import 'package:firebase/features/authentication/presentation/screens/singup.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      home: LoginScreen(),
-      routes: {
-        '/signup': (context) => SignUpScreen(),
-        '/login': (context) => LoginScreen(),
-        '/forgot': (context) => ForgotPasswordScreen(),
-        '/home': (context) => HomeScreen(),
-      },
-    );
-  }
+  runApp(
+    GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      initialRoute: '/login',
+      getPages: [
+        GetPage(name: '/login', page: () => LoginScreen()),
+        GetPage(name: '/home', page: () => HomeScreen()), // Example
+        GetPage(name: '/signup', page: () => SignUpScreen()),
+        GetPage(name: '/forgot', page: () => ForgotPasswordScreen()),
+      ],
+    ),
+  );
 }

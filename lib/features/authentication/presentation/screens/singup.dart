@@ -52,6 +52,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
           ),
         );
+        print(e.code);
       }
     }
   }
