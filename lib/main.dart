@@ -16,7 +16,7 @@ void main() async {
       initialRoute: '/login',
       getPages: [
         GetPage(name: '/login', page: () => LoginScreen()),
-        GetPage(name: '/home', page: () => HomeScreen()), // Example
+        GetPage(name: '/home', page: () => HomeScreen()),
         GetPage(name: '/signup', page: () => SignUpScreen()),
         GetPage(name: '/forgot', page: () => ForgotPasswordScreen()),
       ],
