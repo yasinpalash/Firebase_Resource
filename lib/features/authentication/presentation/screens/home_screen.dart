@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class HomeScreen extends StatelessWidget {
   final List<String> categories = [
@@ -9,6 +11,7 @@ class HomeScreen extends StatelessWidget {
     'Shoes',
     'Electronics',
   ];
+
   final List<Map<String, dynamic>> products = [
     {'name': 'T-Shirt', 'price': '\$20', 'image': Icons.checkroom},
     {'name': 'Sneakers', 'price': '\$50', 'image': Icons.directions_run},
@@ -20,17 +23,34 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("E-Shop"),
-        actions: [
-          IconButton(icon: Icon(Icons.shopping_cart), onPressed: () {}),
-        ],
+        title: const Text("E-Shop"),
         backgroundColor: Colors.teal,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.shopping_cart),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+              Get.offAllNamed('/login');
+              Get.snackbar(
+                "Logged Out",
+                "You have been logged out successfully.",
+                backgroundColor: Colors.tealAccent,
+                colorText: Colors.black,
+                snackPosition: SnackPosition.BOTTOM,
+              );
+            },
+            tooltip: "Logout",
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // 🔍 Search
             TextField(
               decoration: InputDecoration(
                 hintText: "Search products",
@@ -41,8 +61,6 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-
-            // 🗂 Category List
             SizedBox(
               height: 40,
               child: ListView.builder(
@@ -54,7 +72,7 @@ class HomeScreen extends StatelessWidget {
                     child: Chip(
                       label: Text(categories[index]),
                       backgroundColor:
-                          index == 0 ? Colors.teal : Colors.grey[200],
+                      index == 0 ? Colors.teal : Colors.grey[200],
                       labelStyle: TextStyle(
                         color: index == 0 ? Colors.white : Colors.black,
                       ),
@@ -64,12 +82,10 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-
-            // 🛍 Product Grid
             Expanded(
               child: GridView.builder(
                 itemCount: products.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   mainAxisSpacing: 16,
                   crossAxisSpacing: 16,
@@ -89,13 +105,11 @@ class HomeScreen extends StatelessWidget {
                         children: [
                           Icon(product['image'], size: 60, color: Colors.teal),
                           Text(product['name'], style: TextStyle(fontSize: 16)),
-                          Text(
-                            product['price'],
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
+                          Text(product['price'],
+                              style: TextStyle(fontWeight: FontWeight.bold)),
                           ElevatedButton(
                             onPressed: () {},
-                            child: Text("Add to Cart"),
+                            child: const Text("Add to Cart"),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.teal,
                             ),
