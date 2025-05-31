@@ -22,7 +22,7 @@ class LoginController extends GetxController {
         email: email,
         password: password,
       );
-      Get.offAllNamed('/home');
+      await  Get.offAllNamed('/home');
     } on FirebaseAuthException catch (e) {
       String message = "An error occurred.";
       switch (e.code) {
