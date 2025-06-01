@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-
 import 'package:firebase/features/authentication/controllers/sing_up_controller.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -24,7 +23,6 @@ class SignUpScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Header
                   Text(
                     "Create Account",
                     style: theme.textTheme.headlineSmall?.copyWith(
@@ -40,21 +38,39 @@ class SignUpScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 40),
-
-                  // Name Field
                   TextFormField(
-                    controller: controller.nameController,
+                    controller: controller.firstNameController,
                     style: const TextStyle(color: Colors.white),
-                    decoration: _inputDecoration('Name', Icons.person),
+                    decoration: _inputDecoration('First Name', Icons.person),
                     validator:
                         (value) =>
                             value == null || value.trim().isEmpty
-                                ? 'Please enter your name'
+                                ? 'Please enter your first name'
                                 : null,
                   ),
                   const SizedBox(height: 20),
-
-                  // Email Field
+                  TextFormField(
+                    controller: controller.lastNameController,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: _inputDecoration('Last Name', Icons.person),
+                    validator:
+                        (value) =>
+                    value == null || value.trim().isEmpty
+                        ? 'Please enter your last name'
+                        : null,
+                  ),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    controller: controller.ageController,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: _inputDecoration('Age', Icons.date_range),
+                    validator:
+                        (value) =>
+                    value == null || value.trim().isEmpty
+                        ? 'Please enter your  Age'
+                        : null,
+                  ),
+                  const SizedBox(height: 20),
                   TextFormField(
                     controller: controller.emailController,
                     style: const TextStyle(color: Colors.white),
@@ -70,8 +86,6 @@ class SignUpScreen extends StatelessWidget {
                     },
                   ),
                   const SizedBox(height: 20),
-
-                  // Password Field
                   TextFormField(
                     controller: controller.passwordController,
                     obscureText: true,
@@ -91,8 +105,6 @@ class SignUpScreen extends StatelessWidget {
                     },
                   ),
                   const SizedBox(height: 30),
-
-                  // Sign Up Button with Animation
                   SizedBox(
                     width: double.infinity,
                     child:

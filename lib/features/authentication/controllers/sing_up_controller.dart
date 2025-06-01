@@ -1,11 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SignupController extends GetxController {
-  final nameController = TextEditingController();
+  final firstNameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final lastNameController = TextEditingController();
+  final ageController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
   var isLoading = false.obs;
@@ -20,12 +23,15 @@ class SignupController extends GetxController {
         password: passwordController.text.trim(),
       );
 
+      await addUserDetails();
+
       Get.snackbar(
         "Success",
         "Registration successful",
         snackPosition: SnackPosition.BOTTOM,
       );
-      Get.offNamed('/home');
+
+      await Get.offNamed('/home');
     } on FirebaseAuthException catch (e) {
       String message = "Something went wrong";
       if (e.code == 'weak-password') {
@@ -33,6 +39,7 @@ class SignupController extends GetxController {
       } else if (e.code == 'email-already-in-use') {
         message = "Email already in use";
       }
+
       Get.snackbar(
         "Error",
         message,
@@ -45,11 +52,24 @@ class SignupController extends GetxController {
     }
   }
 
+  Future addUserDetails() async {
+    await FirebaseFirestore.instance.collection('user').add(
+      {
+        'first name':firstNameController.text.trim(),
+        'last name':lastNameController.text.trim(),
+        'email':emailController.text.trim(),
+        'age':ageController.text.trim(),
+      }
+    );
+  }
+
   @override
   void onClose() {
-    nameController.dispose();
+    firstNameController.dispose();
     emailController.dispose();
     passwordController.dispose();
+    lastNameController.dispose();
+    ageController.dispose();
     super.onClose();
   }
 }
