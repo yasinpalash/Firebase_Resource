@@ -17,6 +17,7 @@ class SignupController extends GetxController {
     if (!formKey.currentState!.validate()) return;
 
     isLoading.value = true;
+
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailController.text.trim(),

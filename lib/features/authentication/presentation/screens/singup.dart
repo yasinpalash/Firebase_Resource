@@ -55,9 +55,9 @@ class SignUpScreen extends StatelessWidget {
                     decoration: _inputDecoration('Last Name', Icons.person),
                     validator:
                         (value) =>
-                    value == null || value.trim().isEmpty
-                        ? 'Please enter your last name'
-                        : null,
+                            value == null || value.trim().isEmpty
+                                ? 'Please enter your last name'
+                                : null,
                   ),
                   const SizedBox(height: 20),
                   TextFormField(
@@ -66,9 +66,9 @@ class SignUpScreen extends StatelessWidget {
                     decoration: _inputDecoration('Age', Icons.date_range),
                     validator:
                         (value) =>
-                    value == null || value.trim().isEmpty
-                        ? 'Please enter your  Age'
-                        : null,
+                            value == null || value.trim().isEmpty
+                                ? 'Please enter your  Age'
+                                : null,
                   ),
                   const SizedBox(height: 20),
                   TextFormField(
