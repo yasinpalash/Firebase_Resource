@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:crypto/crypto.dart';
 import 'dart:convert';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class FirebaseAuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -61,31 +63,37 @@ class FirebaseAuthService {
     }
   }
 
+
+
   Future<void> saveUser({required String phone, required String pin}) async {
-    String formattedPhone = formatPhoneNumber(phone, countryCode: "880"); // Ensure consistency
+    String formattedPhone = formatPhoneNumber(phone, countryCode: "880");
     String hashedPin = hashPin(pin);
+
     await _firestore.collection("users").doc(formattedPhone).set({
       "phone": formattedPhone,
       "pin": hashedPin,
       "uid": _auth.currentUser!.uid,
     });
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('userPhone', formattedPhone); // Save locally
   }
 
   Future<bool> loginUser({required String phone, required String pin}) async {
     String formattedPhone = formatPhoneNumber(phone, countryCode: "880");
-    print("Formatted login phone: $formattedPhone");
-
     final doc = await _firestore.collection("users").doc(formattedPhone).get();
-    if (!doc.exists) {
-      print("No user found");
-      return false;
-    }
+
+    if (!doc.exists) return false;
 
     final hashedPin = hashPin(pin);
-    print("Entered pin hash: $hashedPin");
-    print("Stored pin hash: ${doc.data()!["pin"]}");
+    final isMatch = doc.data()!["pin"] == hashedPin;
 
-    return doc.data()!["pin"] == hashedPin;
+    if (isMatch) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('userPhone', formattedPhone); // Save locally
+    }
+
+    return isMatch;
   }
 
 
